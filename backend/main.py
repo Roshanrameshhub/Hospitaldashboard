@@ -98,6 +98,10 @@ def patients_route():
 def staff_details_route():
     return get_staff_stats(staff_details)
 
+@app.get("/")
+def root():
+    return {"status": "API running"}
+
 import os
 
 if __name__ == "__main__":
