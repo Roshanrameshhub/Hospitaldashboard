@@ -134,7 +134,120 @@ body {
   .recharts-text { font-size: 9px; }
 }
 
-/* ─── Layout Grid ────────────────────────────────────────────────── */
+/* ─── Global App Layout (3-Column Grid) ─────────────────────────── */
+
+.app-layout {
+  display: grid;
+  grid-template-columns: 260px 1fr 320px;
+  min-height: 100vh;
+  gap: 0;
+}
+
+.app-layout.sidebar-collapsed {
+  grid-template-columns: 80px 1fr 320px;
+}
+
+.main-content {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.notification-panel {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  border-left: 1px solid rgba(255,255,255,0.08);
+  background: rgba(15,20,37,0.5);
+}
+
+/* ─── Dashboard Grid System (12 Column Layout) ──────────────────── */
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 24px;
+}
+
+/* Card Width Rules */
+.card-full { grid-column: span 12; }
+.card-half { grid-column: span 6; }
+.card-third { grid-column: span 4; }
+.card-quarter { grid-column: span 3; }
+.card-two-thirds { grid-column: span 8; }
+
+/* ─── Chart Card Styling ─────────────────────────────────────────── */
+
+.chart-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.chart-body {
+  flex: 1;
+  min-height: 260px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ─── Responsive Grid ────────────────────────────────────────────── */
+
+@media (max-width: 1280px) {
+  .card-third {
+    grid-column: span 6;
+  }
+  .card-quarter {
+    grid-column: span 6;
+  }
+  .card-two-thirds {
+    grid-column: span 12;
+  }
+}
+
+@media (max-width: 1024px) {
+  .app-layout {
+    grid-template-columns: 260px 1fr;
+  }
+  
+  .app-layout.sidebar-collapsed {
+    grid-template-columns: 80px 1fr;
+  }
+
+  .notification-panel {
+    display: none;
+  }
+
+  .card-half,
+  .card-third,
+  .card-quarter {
+    grid-column: span 6;
+  }
+}
+
+@media (max-width: 768px) {
+  .app-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-grid {
+    gap: 16px;
+  }
+
+  .card-full,
+  .card-half,
+  .card-third,
+  .card-quarter,
+  .card-two-thirds {
+    grid-column: span 12;
+  }
+}
+
+/* ─── Layout Grid (Legacy Support) ───────────────────────────────── */
 
 @media (max-width: 1023px) {
   .layout-grid {

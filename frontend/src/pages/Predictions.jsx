@@ -128,16 +128,16 @@ export default function Predictions() {
       />
 
       {/* Main Content Grid - Desktop: 2 columns, Tablet: 1 column */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="dashboard-grid">
         {/* Left Column: Risk Meter + Recommendations */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.1 }}
-          className="space-y-6"
+          className="card-third space-y-6"
         >
           {/* Risk Overview Card */}
-          <div className="glass-card p-6 flex flex-col items-center justify-center min-h-[280px]">
+          <div className="glass-card chart-card p-6 flex flex-col items-center justify-center min-h-[280px]">
             <h3 className="text-sm font-semibold text-gray-300 mb-6">Overall Risk</h3>
             <RiskMeter level={data.prediction.risk_level} />
             <div className="mt-6 text-center">
@@ -163,10 +163,10 @@ export default function Predictions() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.15 }}
-          className="lg:col-span-2 space-y-6"
+          className="card-two-thirds space-y-6"
         >
           {/* Forecast Chart Card */}
-          <div className="glass-card p-6">
+          <div className="glass-card chart-card p-6">
             <div className="flex items-center gap-2 mb-4">
               <TrendingUp className="h-5 w-5 text-cyan-400" />
               <h3 className="text-lg font-semibold text-white">
@@ -176,17 +176,20 @@ export default function Predictions() {
             <p className="text-sm text-gray-400 mb-4">
               Forecast for the next 3 days
             </p>
-            <ForecastChart data={forecastData} />
+            <div className="chart-body">
+              <ForecastChart data={forecastData} />
+            </div>
           </div>
 
           {/* Insights Grid - 2x2 on desktop, 1 column on mobile */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="dashboard-grid">
             {insights.map((ins, idx) => (
               <motion.div
                 key={idx}
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3, delay: 0.25 + idx * 0.05 }}
+                className="card-half"
               >
                 <AiInsightCard {...ins} />
               </motion.div>
@@ -200,6 +203,7 @@ export default function Predictions() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, delay: 0.35 }}
+        className="card-full"
       >
         <OperationalImpactCard
           data={{

@@ -40,9 +40,8 @@ export function WorkloadChart({ data, delay = 0 }) {
   if (!data || (Array.isArray(data) && data.length === 0)) return null;
   return (
     <ChartCard title="Workload by Department" delay={delay}>
-      <div style={{ width: "100%", height: 300 }}>
-        <ResponsiveContainer width="100%" height="100%">
-          <BarChart data={data} barGap={4}>
+      <ResponsiveContainer width="100%" height="100%">
+        <BarChart data={data} barGap={4}>
             <CartesianGrid strokeDasharray="3 3" vertical={false} />
             <XAxis dataKey="department" tick={{ fontSize: 11 }} />
             <YAxis tick={{ fontSize: 11 }} />
@@ -61,7 +60,6 @@ export function WorkloadChart({ data, delay = 0 }) {
             <Bar dataKey="open" name="Open" fill="url(#gradOpen)" radius={[5, 5, 0, 0]} />
           </BarChart>
         </ResponsiveContainer>
-      </div>
     </ChartCard>
   );
 }
@@ -72,8 +70,7 @@ export function ResolutionTrendChart({ data, delay = 0 }) {
   if (!data || (Array.isArray(data) && data.length === 0)) return null;
   return (
     <ChartCard title="Resolution Trend (7 Days)" delay={delay}>
-      <div style={{ width: "100%", height: 300 }}>
-        <ResponsiveContainer width="100%" height="100%">
+      <ResponsiveContainer width="100%" height="100%">
           <AreaChart data={data}>
             <defs>
               <linearGradient id="gradArea" x1="0" y1="0" x2="0" y2="1">
@@ -88,7 +85,6 @@ export function ResolutionTrendChart({ data, delay = 0 }) {
             <Area type="monotone" dataKey="resolved" name="Resolved" stroke="#06b6d4" strokeWidth={2.5} fill="url(#gradArea)" />
           </AreaChart>
         </ResponsiveContainer>
-      </div>
     </ChartCard>
   );
 }
@@ -107,8 +103,7 @@ export function OpenClosedDonut({ kpis, delay = 0 }) {
 
   return (
     <ChartCard title="Open vs Resolved" delay={delay}>
-      <div style={{ width: "100%", height: 300 }}>
-        <ResponsiveContainer width="100%" height="100%">
+      <ResponsiveContainer width="100%" height="100%">
           <PieChart>
             <Pie data={data} cx="50%" cy="50%" innerRadius="55%" outerRadius="80%" paddingAngle={4} dataKey="value" strokeWidth={0}>
               {data.map((_, i) => <Cell key={i} fill={DONUT_COLORS[i]} />)}
@@ -119,7 +114,6 @@ export function OpenClosedDonut({ kpis, delay = 0 }) {
             <text x="50%" y="56%" textAnchor="middle" dominantBaseline="middle" className="fill-gray-500 text-[10px]">Total</text>
           </PieChart>
         </ResponsiveContainer>
-      </div>
     </ChartCard>
   );
 }
@@ -132,8 +126,7 @@ export function PriorityChart({ data, delay = 0 }) {
   if (!data || (Array.isArray(data) && data.length === 0)) return null;
   return (
     <ChartCard title="Priority Distribution" delay={delay}>
-      <div style={{ width: "100%", height: 300 }}>
-        <ResponsiveContainer width="100%" height="100%">
+      <ResponsiveContainer width="100%" height="100%">
           <BarChart data={data} layout="vertical">
             <CartesianGrid strokeDasharray="3 3" horizontal={false} />
             <XAxis type="number" tick={{ fontSize: 11 }} />
@@ -144,7 +137,6 @@ export function PriorityChart({ data, delay = 0 }) {
             </Bar>
           </BarChart>
         </ResponsiveContainer>
-      </div>
     </ChartCard>
   );
 }
@@ -157,8 +149,7 @@ export function ShiftChart({ data, delay = 0 }) {
   if (!data || (Array.isArray(data) && data.length === 0)) return null;
   return (
     <ChartCard title="Shift Analysis" delay={delay}>
-      <div style={{ width: "100%", height: 300 }}>
-        <ResponsiveContainer width="100%" height="100%">
+      <ResponsiveContainer width="100%" height="100%">
           <BarChart data={data}>
             <CartesianGrid strokeDasharray="3 3" vertical={false} />
             <XAxis dataKey="shift" tick={{ fontSize: 11 }} />
@@ -169,7 +160,6 @@ export function ShiftChart({ data, delay = 0 }) {
             </Bar>
           </BarChart>
         </ResponsiveContainer>
-      </div>
     </ChartCard>
   );
 }
@@ -182,8 +172,7 @@ export function IssueTypeChart({ data, delay = 0 }) {
   if (!data || (Array.isArray(data) && data.length === 0)) return null;
   return (
     <ChartCard title="Issue Type Analysis" delay={delay}>
-      <div style={{ width: "100%", height: 300 }}>
-        <ResponsiveContainer width="100%" height="100%">
+      <ResponsiveContainer width="100%" height="100%">
           <BarChart data={data}>
             <CartesianGrid strokeDasharray="3 3" vertical={false} />
             <XAxis dataKey="issue_type" tick={{ fontSize: 11 }} />
@@ -194,7 +183,6 @@ export function IssueTypeChart({ data, delay = 0 }) {
             </Bar>
           </BarChart>
         </ResponsiveContainer>
-      </div>
     </ChartCard>
   );
 }
@@ -205,8 +193,7 @@ export function PatientLoadChart({ data, delay = 0 }) {
   if (!data || (Array.isArray(data) && data.length === 0)) return null;
   return (
     <ChartCard title="Department-wise Patient Load" delay={delay}>
-      <div style={{ width: "100%", height: 300 }}>
-        <ResponsiveContainer width="100%" height="100%">
+      <ResponsiveContainer width="100%" height="100%">
           <BarChart data={data}>
             <CartesianGrid strokeDasharray="3 3" vertical={false} />
             <XAxis dataKey="department" tick={{ fontSize: 11 }} />
@@ -226,7 +213,6 @@ export function PatientLoadChart({ data, delay = 0 }) {
             <Bar dataKey="critical" name="Critical" fill="url(#gradCritical)" radius={[5, 5, 0, 0]} />
           </BarChart>
         </ResponsiveContainer>
-      </div>
     </ChartCard>
   );
 }
@@ -245,8 +231,7 @@ export function StaffDistributionPie({ data, delay = 0 }) {
 
   return (
     <ChartCard title="Staff Distribution by Role" delay={delay}>
-      <div style={{ width: "100%", height: 300 }}>
-        <ResponsiveContainer width="100%" height="100%">
+      <ResponsiveContainer width="100%" height="100%">
           <PieChart>
             <Pie data={pieData} cx="50%" cy="50%" innerRadius="48%" outerRadius="76%" paddingAngle={3} dataKey="value" strokeWidth={0}>
               {pieData.map((_, i) => <Cell key={i} fill={ROLE_COLORS[i]} />)}
@@ -257,7 +242,6 @@ export function StaffDistributionPie({ data, delay = 0 }) {
             <text x="50%" y="55%" textAnchor="middle" dominantBaseline="middle" className="fill-gray-500 text-[10px]">Total Staff</text>
           </PieChart>
         </ResponsiveContainer>
-      </div>
     </ChartCard>
   );
 }
@@ -268,8 +252,7 @@ export function SLATrendChart({ data, delay = 0 }) {
   if (!data || (Array.isArray(data) && data.length === 0)) return null;
   return (
     <ChartCard title="SLA Breaches Over Time" delay={delay}>
-      <div style={{ width: "100%", height: 300 }}>
-        <ResponsiveContainer width="100%" height="100%">
+      <ResponsiveContainer width="100%" height="100%">
           <LineChart data={data}>
             <CartesianGrid strokeDasharray="3 3" vertical={false} />
             <XAxis dataKey="date" tick={{ fontSize: 11 }} tickFormatter={(d) => new Date(d + "T00:00").toLocaleDateString("en-US", { weekday: "short" })} />
@@ -279,7 +262,6 @@ export function SLATrendChart({ data, delay = 0 }) {
             <Line type="monotone" dataKey="resolved" name="Resolved" stroke="#10b981" strokeWidth={2} dot={{ fill: "#10b981", r: 3 }} strokeDasharray="5 5" />
           </LineChart>
         </ResponsiveContainer>
-      </div>
     </ChartCard>
   );
 }
@@ -290,8 +272,7 @@ export function StaffWorkloadChart({ data, delay = 0 }) {
   if (!data || (Array.isArray(data) && data.length === 0)) return null;
   return (
     <ChartCard title="Staff Workload Comparison" delay={delay}>
-      <div style={{ width: "100%", height: 300 }}>
-        <ResponsiveContainer width="100%" height="100%">
+      <ResponsiveContainer width="100%" height="100%">
           <BarChart data={data} layout="vertical">
             <CartesianGrid strokeDasharray="3 3" horizontal={false} />
             <XAxis type="number" tick={{ fontSize: 11 }} />
@@ -301,7 +282,6 @@ export function StaffWorkloadChart({ data, delay = 0 }) {
             <Bar dataKey="open_tickets" name="Open" fill="#f59e0b" radius={[0, 4, 4, 0]} fillOpacity={0.8} />
           </BarChart>
         </ResponsiveContainer>
-      </div>
     </ChartCard>
   );
 }
@@ -324,8 +304,7 @@ export function SLAByDepartmentChart({ workload, breaches, delay = 0 }) {
 
   return (
     <ChartCard title="SLA Compliance by Department" delay={delay}>
-      <div style={{ width: "100%", height: 300 }}>
-        <ResponsiveContainer width="100%" height="100%">
+      <ResponsiveContainer width="100%" height="100%">
           <BarChart data={data}>
             <CartesianGrid strokeDasharray="3 3" vertical={false} />
             <XAxis dataKey="department" tick={{ fontSize: 11 }} />
@@ -338,7 +317,6 @@ export function SLAByDepartmentChart({ workload, breaches, delay = 0 }) {
             </Bar>
           </BarChart>
         </ResponsiveContainer>
-      </div>
     </ChartCard>
   );
 }

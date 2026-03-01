@@ -2,68 +2,42 @@ import { useState } from "react";
 import { Outlet } from "react-router-dom";
 import Sidebar from "./Sidebar";
 import Header from "./Header";
-
-const SIDEBAR_W = 260;
-const SIDEBAR_W_COLLAPSED = 80;
-const NOTIFICATION_W = 320;
+import NotificationPanel from "./NotificationPanel";
 
 export default function MainLayout() {
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [notificationOpen, setNotificationOpen] = useState(false);
 
-  const sidebarWidth = collapsed ? SIDEBAR_W_COLLAPSED : SIDEBAR_W;
-
   return (
-    <div className="min-h-screen bg-[#0B0F19] flex">
-      {/* Sidebar */}
+    <div
+      className={`app-layout ${collapsed ? "sidebar-collapsed" : ""}`}
+    >
+      {/* LEFT: Sidebar (fixed 260px or 80px when collapsed) */}
       <Sidebar
         collapsed={collapsed}
         setCollapsed={setCollapsed}
         mobileOpen={mobileOpen}
         setMobileOpen={setMobileOpen}
-        width={sidebarWidth}
       />
 
-      {/* Main content flex container */}
-      <div
-        className="flex flex-col flex-1 min-w-0"
-        style={{
-          transition: "margin-right 0.3s ease",
-        }}
-      >
+      {/* CENTER: Main Content Area (fluid) */}
+      <div className="main-content">
         <Header
           onMenuClick={() => setMobileOpen(true)}
           onNotificationClick={() => setNotificationOpen(!notificationOpen)}
           notificationOpen={notificationOpen}
         />
 
+        {/* Main Scrollable Area */}
         <main className="flex-1 p-3 sm:p-4 md:p-6 overflow-x-hidden overflow-y-auto">
-          <Outlet context={{ notificationOpen }} />
+          <Outlet context={{ notificationOpen, collapsed }} />
         </main>
       </div>
 
-      {/* Desktop notification panel (sticky) - hidden on mobile */}
+      {/* RIGHT: Notification Panel (fixed 320px on desktop, hidden on mobile) */}
       {notificationOpen && (
-        <div
-          className="hidden lg:flex flex-col w-80 bg-[#0F1425] border-l border-white/10 overflow-hidden"
-          style={{
-            width: NOTIFICATION_W,
-          }}
-        >
-          <div className="sticky top-0 p-4 border-b border-white/10 bg-[#0B0F19]/80 backdrop-blur-sm flex items-center justify-between z-20">
-            <h3 className="text-lg font-semibold text-white">Notifications</h3>
-            <button
-              onClick={() => setNotificationOpen(false)}
-              className="text-gray-400 hover:text-white transition-colors"
-            >
-              ✕
-            </button>
-          </div>
-          <div className="flex-1 overflow-y-auto p-2">
-            <p className="text-center text-gray-500 mt-10">No notifications</p>
-          </div>
-        </div>
+        <NotificationPanel onClose={() => setNotificationOpen(false)} />
       )}
     </div>
   );
