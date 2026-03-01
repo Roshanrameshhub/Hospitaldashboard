@@ -53,6 +53,7 @@ export function ChartCard({ title, children, delay = 0, className = "" }) {
 /* ─── Workload by Department ───────────────────────────────────────── */
 
 export function WorkloadChart({ data, delay = 0 }) {
+  if (!data) return null;
   return (
     <ChartCard title="Workload by Department" delay={delay}>
       <ResponsiveContainer width="100%" height="100%">
@@ -82,6 +83,7 @@ export function WorkloadChart({ data, delay = 0 }) {
 /* ─── Resolution Trend ─────────────────────────────────────────────── */
 
 export function ResolutionTrendChart({ data, delay = 0 }) {
+  if (!data) return null;
   return (
     <ChartCard title="Resolution Trend (7 Days)" delay={delay}>
       <ResponsiveContainer width="100%" height="100%">
@@ -108,6 +110,7 @@ export function ResolutionTrendChart({ data, delay = 0 }) {
 const DONUT_COLORS = ["#f59e0b", "#10b981"];
 
 export function OpenClosedDonut({ kpis, delay = 0 }) {
+  if (!kpis) return null;
   const data = [
     { name: "Open", value: kpis.open_issues },
     { name: "Resolved", value: kpis.resolved_issues },
@@ -136,6 +139,7 @@ export function OpenClosedDonut({ kpis, delay = 0 }) {
 const PRIORITY_COLORS = { High: "#ef4444", Medium: "#f59e0b", Low: "#3b82f6" };
 
 export function PriorityChart({ data, delay = 0 }) {
+  if (!data) return null;
   return (
     <ChartCard title="Priority Distribution" delay={delay}>
       <ResponsiveContainer width="100%" height="100%">
@@ -158,6 +162,7 @@ export function PriorityChart({ data, delay = 0 }) {
 const SHIFT_COLORS = { Morning: "#f59e0b", Afternoon: "#06b6d4", Night: "#8b5cf6" };
 
 export function ShiftChart({ data, delay = 0 }) {
+  if (!data) return null;
   return (
     <ChartCard title="Shift Analysis" delay={delay}>
       <ResponsiveContainer width="100%" height="100%">
@@ -180,6 +185,7 @@ export function ShiftChart({ data, delay = 0 }) {
 const ISSUE_COLORS = ["#06b6d4", "#8b5cf6", "#f59e0b", "#10b981", "#ef4444"];
 
 export function IssueTypeChart({ data, delay = 0 }) {
+  if (!data) return null;
   return (
     <ChartCard title="Issue Type Analysis" delay={delay}>
       <ResponsiveContainer width="100%" height="100%">
@@ -200,6 +206,7 @@ export function IssueTypeChart({ data, delay = 0 }) {
 /* ─── NEW: Patient Load by Department ──────────────────────────────── */
 
 export function PatientLoadChart({ data, delay = 0 }) {
+  if (!data) return null;
   return (
     <ChartCard title="Department-wise Patient Load" delay={delay}>
       <ResponsiveContainer width="100%" height="100%">
@@ -231,6 +238,7 @@ export function PatientLoadChart({ data, delay = 0 }) {
 const ROLE_COLORS = ["#06b6d4", "#10b981", "#f59e0b"];
 
 export function StaffDistributionPie({ data, delay = 0 }) {
+  if (!data) return null;
   const pieData = [
     { name: "Doctors", value: data.by_role.doctors },
     { name: "Nurses", value: data.by_role.nurses },
@@ -257,6 +265,7 @@ export function StaffDistributionPie({ data, delay = 0 }) {
 /* ─── NEW: SLA Breaches Over Time ──────────────────────────────────── */
 
 export function SLATrendChart({ data, delay = 0 }) {
+  if (!data) return null;
   return (
     <ChartCard title="SLA Breaches Over Time" delay={delay}>
       <ResponsiveContainer width="100%" height="100%">
@@ -276,6 +285,7 @@ export function SLATrendChart({ data, delay = 0 }) {
 /* ─── NEW: Staff Workload Comparison ───────────────────────────────── */
 
 export function StaffWorkloadChart({ data, delay = 0 }) {
+  if (!data) return null;
   return (
     <ChartCard title="Staff Workload Comparison" delay={delay}>
       <ResponsiveContainer width="100%" height="100%">
@@ -295,6 +305,7 @@ export function StaffWorkloadChart({ data, delay = 0 }) {
 /* ─── NEW: SLA Compliance by Department ────────────────────────────── */
 
 export function SLAByDepartmentChart({ workload, breaches, delay = 0 }) {
+  if (!workload || !breaches) return null;
   const breachByDept = {};
   breaches.forEach((b) => {
     breachByDept[b.department] = (breachByDept[b.department] || 0) + 1;

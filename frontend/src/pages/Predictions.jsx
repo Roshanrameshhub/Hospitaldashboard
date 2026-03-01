@@ -4,30 +4,38 @@ import { BrainCircuit, TrendingUp, AlertTriangle, Zap, BarChart3 } from "lucide-
 import { KPICard } from "../components/KPICards";
 import { ShiftChart, ResolutionTrendChart } from "../components/DashboardCharts";
 import InsightsPanel from "../components/InsightsPanel";
-import LoadingSkeleton from "../components/LoadingSkeleton";
 import * as api from "../api";
 
 export default function Predictions() {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
-    Promise.all([
-      api.getPrediction(),
-      api.getAlerts(),
-      api.getShiftAnalysis(),
-      api.getResolutionTrend(),
-      api.getStaffPerformance(),
-      api.getKPIs(),
-    ])
-      .then(([prediction, alerts, shift, trend, staff, kpis]) =>
-        setData({ prediction, alerts, shift, trend, staff, kpis })
-      )
-      .catch(console.error)
-      .finally(() => setLoading(false));
+    async function load() {
+      try {
+        const [prediction, alerts, shift, trend, staff, kpis] = await Promise.all([
+          api.getPrediction(),
+          api.getAlerts(),
+          api.getShiftAnalysis(),
+          api.getResolutionTrend(),
+          api.getStaffPerformance(),
+          api.getKPIs(),
+        ]);
+        setData({ prediction, alerts, shift, trend, staff, kpis });
+      } catch (err) {
+        console.error(err);
+        setError(true);
+      } finally {
+        setLoading(false);
+      }
+    }
+    load();
   }, []);
 
-  if (loading || !data) return <LoadingSkeleton />;
+  if (loading) return <p>Loading dashboard data...</p>;
+  if (error) return <p>Failed to load data</p>;
+  if (!data) return null;
 
   const riskColor = { Low: "from-emerald-500 to-green-600", Medium: "from-amber-500 to-orange-600", High: "from-red-500 to-rose-600" };
   const riskSparkColor = { Low: "#10b981", Medium: "#f59e0b", High: "#ef4444" };

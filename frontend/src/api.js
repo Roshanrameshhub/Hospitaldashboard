@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API = axios.create({ baseURL: "http://localhost:8000" });
+const API = axios.create({ baseURL: import.meta.env.VITE_API_URL });
 
 export const getKPIs = () => API.get("/kpis").then((r) => r.data);
 export const getWorkload = () => API.get("/workload").then((r) => r.data);
@@ -16,3 +16,5 @@ export const getPrediction = () => API.get("/prediction").then((r) => r.data);
 export const getRecentActivity = () => API.get("/recent-activity").then((r) => r.data);
 export const getPatients = () => API.get("/patients").then((r) => r.data);
 export const getStaffDetails = () => API.get("/staff-details").then((r) => r.data);
+
+export default API;

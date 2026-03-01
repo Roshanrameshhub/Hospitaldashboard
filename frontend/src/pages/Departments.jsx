@@ -8,29 +8,37 @@ import {
   IssueTypeChart,
   PriorityChart,
 } from "../components/DashboardCharts";
-import LoadingSkeleton from "../components/LoadingSkeleton";
 import * as api from "../api";
 
 export default function Departments() {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
-    Promise.all([
-      api.getWorkload(),
-      api.getPatients(),
-      api.getIssueTypeAnalysis(),
-      api.getPriorityDistribution(),
-      api.getKPIs(),
-    ])
-      .then(([workload, patients, issueType, priority, kpis]) =>
-        setData({ workload, patients, issueType, priority, kpis })
-      )
-      .catch(console.error)
-      .finally(() => setLoading(false));
+    async function load() {
+      try {
+        const [workload, patients, issueType, priority, kpis] = await Promise.all([
+          api.getWorkload(),
+          api.getPatients(),
+          api.getIssueTypeAnalysis(),
+          api.getPriorityDistribution(),
+          api.getKPIs(),
+        ]);
+        setData({ workload, patients, issueType, priority, kpis });
+      } catch (err) {
+        console.error(err);
+        setError(true);
+      } finally {
+        setLoading(false);
+      }
+    }
+    load();
   }, []);
 
-  if (loading || !data) return <LoadingSkeleton />;
+  if (loading) return <p>Loading dashboard data...</p>;
+  if (error) return <p>Failed to load data</p>;
+  if (!data) return null;
 
   const deptCards = [
     { icon: Building2, label: "Departments", value: 5, color: "from-cyan-500 to-blue-600", sparkColor: "#06b6d4" },

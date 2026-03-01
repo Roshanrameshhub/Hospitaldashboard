@@ -4,7 +4,6 @@ import KPICards from "../components/KPICards";
 import { ResolutionTrendChart, OpenClosedDonut } from "../components/DashboardCharts";
 import InsightsPanel from "../components/InsightsPanel";
 import RecentActivity from "../components/RecentActivity";
-import LoadingSkeleton from "../components/LoadingSkeleton";
 import * as api from "../api";
 
 const extraCards = [
@@ -16,31 +15,40 @@ const extraCards = [
 export default function Dashboard() {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
-    Promise.all([
-      api.getKPIs(),
-      api.getResolutionTrend(),
-      api.getAlerts(),
-      api.getPrediction(),
-      api.getStaffPerformance(),
-      api.getRecentActivity(),
-      api.getPatients(),
-      api.getStaffDetails(),
-    ])
-      .then(([kpis, trend, alerts, prediction, staff, activity, patients, staffDetails]) => {
+    async function load() {
+      try {
+        const [kpis, trend, alerts, prediction, staff, activity, patients, staffDetails] = await Promise.all([
+          api.getKPIs(),
+          api.getResolutionTrend(),
+          api.getAlerts(),
+          api.getPrediction(),
+          api.getStaffPerformance(),
+          api.getRecentActivity(),
+          api.getPatients(),
+          api.getStaffDetails(),
+        ]);
         const merged = {
           ...kpis,
           total_patients: patients.total_patients,
           active_staff: staffDetails.active_staff,
         };
         setData({ kpis: merged, trend, alerts, prediction, staff, activity, patients, staffDetails });
-      })
-      .catch(console.error)
-      .finally(() => setLoading(false));
+      } catch (err) {
+        console.error(err);
+        setError(true);
+      } finally {
+        setLoading(false);
+      }
+    }
+    load();
   }, []);
 
-  if (loading || !data) return <LoadingSkeleton />;
+  if (loading) return <p>Loading dashboard data...</p>;
+  if (error) return <p>Failed to load data</p>;
+  if (!data) return null;
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-5 sm:space-y-6">

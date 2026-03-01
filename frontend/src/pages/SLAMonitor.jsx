@@ -4,29 +4,37 @@ import { ShieldCheck, ShieldAlert, Timer, TrendingDown } from "lucide-react";
 import { KPICard } from "../components/KPICards";
 import { SLATrendChart, PriorityChart, SLAByDepartmentChart } from "../components/DashboardCharts";
 import SLATable from "../components/SLATable";
-import LoadingSkeleton from "../components/LoadingSkeleton";
 import * as api from "../api";
 
 export default function SLAMonitor() {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
-    Promise.all([
-      api.getKPIs(),
-      api.getSLABreaches(),
-      api.getSLATrend(),
-      api.getPriorityDistribution(),
-      api.getWorkload(),
-    ])
-      .then(([kpis, breaches, slaTrend, priority, workload]) =>
-        setData({ kpis, breaches, slaTrend, priority, workload })
-      )
-      .catch(console.error)
-      .finally(() => setLoading(false));
+    async function load() {
+      try {
+        const [kpis, breaches, slaTrend, priority, workload] = await Promise.all([
+          api.getKPIs(),
+          api.getSLABreaches(),
+          api.getSLATrend(),
+          api.getPriorityDistribution(),
+          api.getWorkload(),
+        ]);
+        setData({ kpis, breaches, slaTrend, priority, workload });
+      } catch (err) {
+        console.error(err);
+        setError(true);
+      } finally {
+        setLoading(false);
+      }
+    }
+    load();
   }, []);
 
-  if (loading || !data) return <LoadingSkeleton />;
+  if (loading) return <p>Loading dashboard data...</p>;
+  if (error) return <p>Failed to load data</p>;
+  if (!data) return null;
 
   const cards = [
     { icon: ShieldCheck, label: "SLA Compliance", value: data.kpis.sla_compliance_percent, suffix: "%", color: "from-emerald-500 to-green-600", sparkColor: "#10b981", trend: "+2%", trendUp: true },

@@ -4,24 +4,34 @@ import { Users, UserCheck, UserX, Award } from "lucide-react";
 import { KPICard } from "../components/KPICards";
 import { StaffDistributionPie, StaffWorkloadChart } from "../components/DashboardCharts";
 import StaffLeaderboard from "../components/StaffLeaderboard";
-import LoadingSkeleton from "../components/LoadingSkeleton";
 import * as api from "../api";
 
 export default function StaffAnalytics() {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
-    Promise.all([
-      api.getStaffPerformance(),
-      api.getStaffDetails(),
-    ])
-      .then(([performance, details]) => setData({ performance, details }))
-      .catch(console.error)
-      .finally(() => setLoading(false));
+    async function load() {
+      try {
+        const [performance, details] = await Promise.all([
+          api.getStaffPerformance(),
+          api.getStaffDetails(),
+        ]);
+        setData({ performance, details });
+      } catch (err) {
+        console.error(err);
+        setError(true);
+      } finally {
+        setLoading(false);
+      }
+    }
+    load();
   }, []);
 
-  if (loading || !data) return <LoadingSkeleton />;
+  if (loading) return <p>Loading dashboard data...</p>;
+  if (error) return <p>Failed to load data</p>;
+  if (!data) return null;
 
   const cards = [
     { icon: Users, label: "Total Staff", value: data.details.total_staff, color: "from-cyan-500 to-blue-600", sparkColor: "#06b6d4" },
