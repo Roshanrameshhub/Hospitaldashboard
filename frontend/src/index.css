@@ -1,0 +1,152 @@
+@import "tailwindcss";
+
+@theme {
+  --color-dark-900: #0B0F19;
+  --color-dark-800: #111827;
+  --color-dark-700: #1F2937;
+  --color-dark-600: #374151;
+
+  --animate-pulse-slow: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  --animate-glow: glow 2s ease-in-out infinite alternate;
+
+  @keyframes glow {
+    0% { box-shadow: 0 0 5px rgba(6,182,212,0.2), 0 0 20px rgba(6,182,212,0.1); }
+    100% { box-shadow: 0 0 10px rgba(6,182,212,0.4), 0 0 40px rgba(6,182,212,0.2); }
+  }
+
+  @keyframes shimmer {
+    100% { transform: translateX(100%); }
+  }
+}
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@media (max-width: 1366px) {
+  html { font-size: 15px; }
+}
+
+body {
+  font-family: "Inter", system-ui, -apple-system, sans-serif;
+  background: #0b0f19;
+  color: #f1f5f9;
+  overflow-x: hidden;
+  line-height: 1.5;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+/* ─── Scrollbar ──────────────────────────────────────────────────── */
+
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: rgba(255,255,255,0.02); }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.15); }
+
+/* ─── Glass Cards ────────────────────────────────────────────────── */
+
+.glass-card {
+  position: relative;
+  border-radius: 0.875rem;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.04);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.12);
+}
+
+.glass-card-hover {
+  position: relative;
+  border-radius: 0.875rem;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.04);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.12);
+  transition: all 0.25s ease;
+}
+
+.glass-card-hover:hover {
+  border-color: rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.06);
+  box-shadow: 0 16px 32px rgba(0,0,0,0.18);
+  transform: translateY(-2px);
+}
+
+/* ─── Gradient Border ────────────────────────────────────────────── */
+
+.gradient-border { position: relative; }
+
+.gradient-border::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg, rgba(6,182,212,0.5), rgba(59,130,246,0.5), rgba(139,92,246,0.3));
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.gradient-border:hover::before { opacity: 1; }
+
+/* ─── Glow Effects ───────────────────────────────────────────────── */
+
+.glow-cyan {
+  box-shadow: 0 0 12px rgba(6,182,212,0.12), 0 0 24px rgba(6,182,212,0.04);
+}
+
+.glow-purple {
+  box-shadow: 0 0 12px rgba(139,92,246,0.12), 0 0 24px rgba(139,92,246,0.04);
+}
+
+/* ─── Recharts Overrides ─────────────────────────────────────────── */
+
+.recharts-cartesian-grid-horizontal line,
+.recharts-cartesian-grid-vertical line {
+  stroke: rgba(255,255,255,0.05);
+}
+
+.recharts-text {
+  fill: #94a3b8 !important;
+  font-size: 11px;
+}
+
+@media (max-width: 640px) {
+  .recharts-text { font-size: 9px; }
+}
+
+/* ─── Layout Grid ────────────────────────────────────────────────── */
+
+@media (max-width: 1023px) {
+  .layout-grid {
+    display: flex !important;
+    flex-direction: column;
+    grid-template-columns: none !important;
+  }
+}
+
+/* ─── Select dropdown fix for dark theme ─────────────────────────── */
+
+select option {
+  background: #1a1f2e;
+  color: #e2e8f0;
+}
