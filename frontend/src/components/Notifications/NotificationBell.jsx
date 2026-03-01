@@ -12,13 +12,18 @@ const defaultNotifications = [
   { icon: AlertTriangle, title: "System prediction alert", time: "3h ago", severity: "info", read: false },
 ];
 
-export default function NotificationBell() {
+export default function NotificationBell({ onToggle, isOpen }) {
   const [open, setOpen] = useState(false);
   const [notifications, setNotifications] = useState(defaultNotifications);
 
   const unreadCount = notifications.filter((n) => !n.read).length;
 
-  const toggle = () => setOpen((v) => !v);
+  const toggle = () => {
+    const newState = !open;
+    setOpen(newState);
+    if (onToggle) onToggle(newState);
+  };
+
   const markAsRead = (idx) => {
     setNotifications((prev) => {
       const copy = [...prev];
@@ -33,7 +38,9 @@ export default function NotificationBell() {
   return (
     <>
       <button
-        className="relative h-9 w-9 flex items-center justify-center rounded-lg bg-white/5 border border-white/10 hover:bg-white/10 transition-colors"
+        className={`relative h-9 w-9 flex items-center justify-center rounded-lg border transition-colors ${
+          open || isOpen ? "bg-white/15 border-white/30" : "bg-white/5 border-white/10 hover:bg-white/10"
+        }`}
         onClick={toggle}
       >
         <Bell className="h-4 w-4 text-gray-400" />
@@ -44,7 +51,10 @@ export default function NotificationBell() {
       <NotificationDrawer
         open={open}
         notifications={notifications}
-        onClose={() => setOpen(false)}
+        onClose={() => {
+          setOpen(false);
+          if (onToggle) onToggle(false);
+        }}
         markAsRead={markAsRead}
         markAll={markAll}
       />
