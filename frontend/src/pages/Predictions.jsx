@@ -1,10 +1,9 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { TrendingUp, AlertTriangle, Users, Bed } from "lucide-react";
+import { TrendingUp, AlertTriangle, Users, Bed, CheckCircle } from "lucide-react";
+import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip } from "recharts";
 import SectionHeader from "../components/UI/SectionHeader";
-import Card from "../components/UI/Card";
 import Skeleton from "../components/Skeleton";
-import AiInsightCard from "../components/AI/AiInsightCard";
 import RiskMeter from "../components/AI/RiskMeter";
 import RecommendationPanel from "../components/AI/RecommendationPanel";
 import ForecastChart from "../components/AI/ForecastChart";
@@ -15,6 +14,12 @@ export default function Predictions() {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+  const [allRead, setAllRead] = useState(false);
+  const [notifications, setNotifications] = useState([
+    { id: 1, title: "SLA breach detected", time: "2m ago", severity: "critical", read: false },
+    { id: 2, title: "Critical patient admitted", time: "10m ago", severity: "warning", read: false },
+    { id: 3, title: "Staff shortage warning", time: "1h ago", severity: "info", read: false },
+  ]);
 
   useEffect(() => {
     async function load() {
@@ -37,6 +42,14 @@ export default function Predictions() {
     }
     load();
   }, []);
+
+  const handleMarkAllRead = () => {
+    setNotifications(prev =>
+      prev.map(n => ({ ...n, read: true }))
+    );
+    setAllRead(true);
+    setTimeout(() => setAllRead(false), 3000);
+  };
 
   if (loading)
     return (
@@ -115,104 +128,193 @@ export default function Predictions() {
   ];
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.3 }}
-      className="space-y-6"
-    >
+    <div className="p-4 md:p-6 space-y-6 max-w-[1400px] mx-auto overflow-x-hidden">
       {/* Section Header */}
       <SectionHeader
         title="AI Insights & Forecast"
         subtitle="Predictive analytics powered by machine learning"
       />
 
-      {/* Main Content Grid - Desktop: 2 columns, Tablet: 1 column */}
-      <div className="dashboard-grid">
-        {/* Left Column: Risk Meter + Recommendations */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4, delay: 0.1 }}
-          className="card-third space-y-6"
-        >
-          {/* Risk Overview Card */}
-          <div className="glass-card chart-card p-6 flex flex-col items-center justify-center min-h-[280px]">
+      {/* Main 12-Column Grid Layout */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        {/* LEFT SIDE - 8 Columns: Charts and Operational Cards */}
+        <div className="lg:col-span-8 space-y-6">
+          {/* 1. Predicted Issue Volume Chart - Full Width */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: 0.1 }}
+          >
+            <div className="glass-card p-5 rounded-2xl h-full flex flex-col">
+              <div className="flex items-center gap-2 mb-4">
+                <TrendingUp className="h-5 w-5 text-cyan-400" />
+                <h3 className="text-lg font-semibold text-white">
+                  Predicted Issue Volume
+                </h3>
+              </div>
+              <p className="text-sm text-gray-400 mb-4">
+                Forecast for the next 3 days
+              </p>
+              <div className="flex-1 min-h-[300px]">
+                <div className="w-full h-[320px] min-h-[300px]">
+                  <ForecastChart data={data ? data.prediction.last_3_days.map((v, i) => ({
+                    date: `Day ${i + 1}`,
+                    value: v,
+                  })) : []} />
+                </div>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* 2. Two Cards Below - Operational Impact & SLA Risk */}
+          <div className="grid md:grid-cols-2 gap-6">
+            {/* Operational Impact Card */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: 0.2 }}
+            >
+              <OperationalImpactCard
+                data={{
+                  icu_occupancy: data?.prediction?.icu_occupancy || 75,
+                  er_load: data?.prediction?.er_load || 82,
+                  staff_util: data?.prediction?.staff_util || 68,
+                }}
+              />
+            </motion.div>
+
+            {/* SLA Risk Card */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: 0.25 }}
+              className="glass-card p-5 rounded-2xl h-full flex flex-col"
+            >
+              <div className="flex items-center gap-2 mb-4">
+                <AlertTriangle className="h-5 w-5 text-amber-400" />
+                <h3 className="text-sm font-semibold text-white">
+                  SLA Breach Risk
+                </h3>
+              </div>
+              <div className="flex-1 space-y-4">
+                <div>
+                  <div className="flex justify-between mb-2">
+                    <p className="text-xs text-gray-400">Mid-week Risk</p>
+                    <p className="text-sm font-bold text-amber-400">
+                      {data?.prediction?.sla_risk || 63}%
+                    </p>
+                  </div>
+                  <div className="h-2 bg-white/10 rounded-full overflow-hidden">
+                    <div
+                      className="h-full bg-gradient-to-r from-amber-400 to-red-500"
+                      style={{ width: `${data?.prediction?.sla_risk || 63}%` }}
+                    />
+                  </div>
+                </div>
+                <p className="text-xs text-gray-400">
+                  Monitor peak hours closely. Consider staffing adjustments.
+                </p>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+
+        {/* RIGHT SIDE - 4 Columns: Risk Meter & Recommendations */}
+        <div className="lg:col-span-4 space-y-6">
+          {/* Risk Level Card */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: 0.15 }}
+            className="glass-card p-5 rounded-2xl h-full flex flex-col items-center justify-center"
+          >
             <h3 className="text-sm font-semibold text-gray-300 mb-6">Overall Risk</h3>
-            <RiskMeter level={data.prediction.risk_level} />
+            <RiskMeter level={data?.prediction?.risk_level || 2} />
             <div className="mt-6 text-center">
               <p className="text-xs text-gray-400 mb-2">Confidence Score</p>
               <p className="text-2xl font-bold text-cyan-400">
-                {data.prediction.confidence || 76}%
+                {data?.prediction?.confidence || 76}%
               </p>
             </div>
-          </div>
+          </motion.div>
 
           {/* Recommendations Card */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: 0.2 }}
+            className="glass-card p-5 rounded-2xl h-full flex flex-col"
           >
-            <RecommendationPanel recommendations={recommendations} />
+            <h3 className="text-sm font-semibold text-white mb-4">
+              Recommendations
+            </h3>
+            <div className="flex-1 space-y-3">
+              {recommendations.map((rec, idx) => (
+                <motion.div
+                  key={idx}
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.3, delay: 0.3 + idx * 0.05 }}
+                  className="flex gap-3 items-start"
+                >
+                  <div className="h-2 w-2 rounded-full bg-cyan-400 mt-1.5 flex-shrink-0" />
+                  <p className="text-xs text-gray-300 break-words min-h-[80px]">
+                    {rec}
+                  </p>
+                </motion.div>
+              ))}
+            </div>
           </motion.div>
-        </motion.div>
 
-        {/* Middle-Right Column: Forecast Chart + Insights Grid */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4, delay: 0.15 }}
-          className="card-two-thirds space-y-6"
-        >
-          {/* Forecast Chart Card */}
-          <div className="glass-card chart-card p-6">
-            <div className="flex items-center gap-2 mb-4">
-              <TrendingUp className="h-5 w-5 text-cyan-400" />
-              <h3 className="text-lg font-semibold text-white">
-                Predicted Issue Volume
-              </h3>
+          {/* Notifications Card */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: 0.25 }}
+            className="glass-card p-5 rounded-2xl h-full flex flex-col"
+          >
+            <h3 className="text-sm font-semibold text-white mb-4">
+              Active Alerts
+            </h3>
+            <div className="flex-1 space-y-2">
+              {notifications.map((notif) => (
+                <div
+                  key={notif.id}
+                  className={`p-3 rounded-lg border-l-3 transition-opacity ${
+                    notif.severity === "critical"
+                      ? "border-l-red-500 bg-red-500/10"
+                      : notif.severity === "warning"
+                      ? "border-l-amber-500 bg-amber-500/10"
+                      : "border-l-cyan-500 bg-cyan-500/10"
+                  } ${notif.read ? "opacity-40" : ""}`}
+                >
+                  <p className="text-xs font-medium text-gray-300 truncate">
+                    {notif.title}
+                  </p>
+                  <p className="text-xs text-gray-500 mt-1">{notif.time}</p>
+                </div>
+              ))}
             </div>
-            <p className="text-sm text-gray-400 mb-4">
-              Forecast for the next 3 days
-            </p>
-            <div className="chart-body">
-              <ForecastChart data={forecastData} />
-            </div>
-          </div>
-
-          {/* Insights Grid - 2x2 on desktop, 1 column on mobile */}
-          <div className="dashboard-grid">
-            {insights.map((ins, idx) => (
+            <button
+              onClick={handleMarkAllRead}
+              className="text-xs text-cyan-400 hover:underline font-medium mt-4 transition-colors"
+            >
+              Mark all as read
+            </button>
+            {allRead && (
               <motion.div
-                key={idx}
-                initial={{ opacity: 0, y: 10 }}
+                initial={{ opacity: 0, y: -5 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3, delay: 0.25 + idx * 0.05 }}
-                className="card-half"
+                exit={{ opacity: 0 }}
+                className="flex items-center gap-2 text-xs text-green-400 mt-3 bg-green-500/10 p-2 rounded"
               >
-                <AiInsightCard {...ins} />
+                <CheckCircle className="h-3 w-3" />
+                All notifications marked as read
               </motion.div>
-            ))}
-          </div>
-        </motion.div>
+            )}
+          </motion.div>
+        </div>
       </div>
-
-      {/* Full-Width Operational Impact Card */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4, delay: 0.35 }}
-        className="card-full"
-      >
-        <OperationalImpactCard
-          data={{
-            icu_occupancy: data.prediction.icu_occupancy || 75,
-            er_load: data.prediction.er_load || 82,
-            staff_util: data.prediction.staff_util || 68,
-          }}
-        />
-      </motion.div>
-    </motion.div>
+    </div>
   );
 }
