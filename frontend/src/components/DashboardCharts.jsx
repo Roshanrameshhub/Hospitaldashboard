@@ -59,24 +59,25 @@ export function WorkloadChart({ data, delay = 0 }) {
       <div style={{ width: "100%", height: 300 }}>
         <ResponsiveContainer width="100%" height="100%">
           <BarChart data={data} barGap={4}>
-          <CartesianGrid strokeDasharray="3 3" vertical={false} />
-          <XAxis dataKey="department" tick={{ fontSize: 11 }} />
-          <YAxis tick={{ fontSize: 11 }} />
-          <Tooltip content={<CustomTooltip />} cursor={{ fill: "rgba(255,255,255,0.03)" }} />
-          <defs>
-            <linearGradient id="gradTotal" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#06b6d4" stopOpacity={0.9} />
-              <stop offset="100%" stopColor="#06b6d4" stopOpacity={0.3} />
-            </linearGradient>
-            <linearGradient id="gradOpen" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#f59e0b" stopOpacity={0.9} />
-              <stop offset="100%" stopColor="#f59e0b" stopOpacity={0.3} />
-            </linearGradient>
-          </defs>
-          <Bar dataKey="total" name="Total" fill="url(#gradTotal)" radius={[5, 5, 0, 0]} />
-          <Bar dataKey="open" name="Open" fill="url(#gradOpen)" radius={[5, 5, 0, 0]} />
-        </BarChart>
-      </ResponsiveContainer>
+            <CartesianGrid strokeDasharray="3 3" vertical={false} />
+            <XAxis dataKey="department" tick={{ fontSize: 11 }} />
+            <YAxis tick={{ fontSize: 11 }} />
+            <Tooltip content={<CustomTooltip />} cursor={{ fill: "rgba(255,255,255,0.03)" }} />
+            <defs>
+              <linearGradient id="gradTotal" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="#06b6d4" stopOpacity={0.9} />
+                <stop offset="100%" stopColor="#06b6d4" stopOpacity={0.3} />
+              </linearGradient>
+              <linearGradient id="gradOpen" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="#f59e0b" stopOpacity={0.9} />
+                <stop offset="100%" stopColor="#f59e0b" stopOpacity={0.3} />
+              </linearGradient>
+            </defs>
+            <Bar dataKey="total" name="Total" fill="url(#gradTotal)" radius={[5, 5, 0, 0]} />
+            <Bar dataKey="open" name="Open" fill="url(#gradOpen)" radius={[5, 5, 0, 0]} />
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
     </ChartCard>
   );
 }
@@ -90,19 +91,20 @@ export function ResolutionTrendChart({ data, delay = 0 }) {
       <div style={{ width: "100%", height: 300 }}>
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart data={data}>
-          <defs>
-            <linearGradient id="gradArea" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#06b6d4" stopOpacity={0.3} />
-              <stop offset="100%" stopColor="#06b6d4" stopOpacity={0} />
-            </linearGradient>
-          </defs>
-          <CartesianGrid strokeDasharray="3 3" vertical={false} />
-          <XAxis dataKey="date" tick={{ fontSize: 11 }} tickFormatter={(d) => new Date(d + "T00:00").toLocaleDateString("en-US", { weekday: "short" })} />
-          <YAxis tick={{ fontSize: 11 }} />
-          <Tooltip content={<CustomTooltip />} />
-          <Area type="monotone" dataKey="resolved" name="Resolved" stroke="#06b6d4" strokeWidth={2.5} fill="url(#gradArea)" />
-        </AreaChart>
-      </ResponsiveContainer>
+            <defs>
+              <linearGradient id="gradArea" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="#06b6d4" stopOpacity={0.3} />
+                <stop offset="100%" stopColor="#06b6d4" stopOpacity={0} />
+              </linearGradient>
+            </defs>
+            <CartesianGrid strokeDasharray="3 3" vertical={false} />
+            <XAxis dataKey="date" tick={{ fontSize: 11 }} tickFormatter={(d) => new Date(d + "T00:00").toLocaleDateString("en-US", { weekday: "short" })} />
+            <YAxis tick={{ fontSize: 11 }} />
+            <Tooltip content={<CustomTooltip />} />
+            <Area type="monotone" dataKey="resolved" name="Resolved" stroke="#06b6d4" strokeWidth={2.5} fill="url(#gradArea)" />
+          </AreaChart>
+        </ResponsiveContainer>
+      </div>
     </ChartCard>
   );
 }
@@ -124,15 +126,16 @@ export function OpenClosedDonut({ kpis, delay = 0 }) {
       <div style={{ width: "100%", height: 300 }}>
         <ResponsiveContainer width="100%" height="100%">
           <PieChart>
-          <Pie data={data} cx="50%" cy="50%" innerRadius="55%" outerRadius="80%" paddingAngle={4} dataKey="value" strokeWidth={0}>
-            {data.map((_, i) => <Cell key={i} fill={DONUT_COLORS[i]} />)}
-          </Pie>
-          <Tooltip content={<PieTooltip />} />
-          <Legend verticalAlign="bottom" iconType="circle" formatter={(v) => <span className="text-gray-400 text-xs ml-1">{v}</span>} />
-          <text x="50%" y="46%" textAnchor="middle" dominantBaseline="middle" className="fill-white text-2xl font-bold">{total}</text>
-          <text x="50%" y="56%" textAnchor="middle" dominantBaseline="middle" className="fill-gray-500 text-[10px]">Total</text>
-        </PieChart>
-      </ResponsiveContainer>
+            <Pie data={data} cx="50%" cy="50%" innerRadius="55%" outerRadius="80%" paddingAngle={4} dataKey="value" strokeWidth={0}>
+              {data.map((_, i) => <Cell key={i} fill={DONUT_COLORS[i]} />)}
+            </Pie>
+            <Tooltip content={<PieTooltip />} />
+            <Legend verticalAlign="bottom" iconType="circle" formatter={(v) => <span className="text-gray-400 text-xs ml-1">{v}</span>} />
+            <text x="50%" y="46%" textAnchor="middle" dominantBaseline="middle" className="fill-white text-2xl font-bold">{total}</text>
+            <text x="50%" y="56%" textAnchor="middle" dominantBaseline="middle" className="fill-gray-500 text-[10px]">Total</text>
+          </PieChart>
+        </ResponsiveContainer>
+      </div>
     </ChartCard>
   );
 }
@@ -148,15 +151,16 @@ export function PriorityChart({ data, delay = 0 }) {
       <div style={{ width: "100%", height: 300 }}>
         <ResponsiveContainer width="100%" height="100%">
           <BarChart data={data} layout="vertical">
-          <CartesianGrid strokeDasharray="3 3" horizontal={false} />
-          <XAxis type="number" tick={{ fontSize: 11 }} />
-          <YAxis dataKey="priority" type="category" tick={{ fontSize: 11 }} width={55} />
-          <Tooltip content={<CustomTooltip />} cursor={{ fill: "rgba(255,255,255,0.03)" }} />
-          <Bar dataKey="count" name="Count" radius={[0, 5, 5, 0]}>
-            {data.map((entry, i) => <Cell key={i} fill={PRIORITY_COLORS[entry.priority]} fillOpacity={0.85} />)}
-          </Bar>
-        </BarChart>
-      </ResponsiveContainer>
+            <CartesianGrid strokeDasharray="3 3" horizontal={false} />
+            <XAxis type="number" tick={{ fontSize: 11 }} />
+            <YAxis dataKey="priority" type="category" tick={{ fontSize: 11 }} width={55} />
+            <Tooltip content={<CustomTooltip />} cursor={{ fill: "rgba(255,255,255,0.03)" }} />
+            <Bar dataKey="count" name="Count" radius={[0, 5, 5, 0]}>
+              {data.map((entry, i) => <Cell key={i} fill={PRIORITY_COLORS[entry.priority]} fillOpacity={0.85} />)}
+            </Bar>
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
     </ChartCard>
   );
 }
@@ -172,15 +176,16 @@ export function ShiftChart({ data, delay = 0 }) {
       <div style={{ width: "100%", height: 300 }}>
         <ResponsiveContainer width="100%" height="100%">
           <BarChart data={data}>
-          <CartesianGrid strokeDasharray="3 3" vertical={false} />
-          <XAxis dataKey="shift" tick={{ fontSize: 11 }} />
-          <YAxis tick={{ fontSize: 11 }} />
-          <Tooltip content={<CustomTooltip />} cursor={{ fill: "rgba(255,255,255,0.03)" }} />
-          <Bar dataKey="count" name="Tickets" radius={[5, 5, 0, 0]}>
-            {data.map((entry, i) => <Cell key={i} fill={SHIFT_COLORS[entry.shift]} fillOpacity={0.85} />)}
-          </Bar>
-        </BarChart>
-      </ResponsiveContainer>
+            <CartesianGrid strokeDasharray="3 3" vertical={false} />
+            <XAxis dataKey="shift" tick={{ fontSize: 11 }} />
+            <YAxis tick={{ fontSize: 11 }} />
+            <Tooltip content={<CustomTooltip />} cursor={{ fill: "rgba(255,255,255,0.03)" }} />
+            <Bar dataKey="count" name="Tickets" radius={[5, 5, 0, 0]}>
+              {data.map((entry, i) => <Cell key={i} fill={SHIFT_COLORS[entry.shift]} fillOpacity={0.85} />)}
+            </Bar>
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
     </ChartCard>
   );
 }
@@ -196,15 +201,16 @@ export function IssueTypeChart({ data, delay = 0 }) {
       <div style={{ width: "100%", height: 300 }}>
         <ResponsiveContainer width="100%" height="100%">
           <BarChart data={data}>
-          <CartesianGrid strokeDasharray="3 3" vertical={false} />
-          <XAxis dataKey="issue_type" tick={{ fontSize: 11 }} />
-          <YAxis tick={{ fontSize: 11 }} />
-          <Tooltip content={<CustomTooltip />} cursor={{ fill: "rgba(255,255,255,0.03)" }} />
-          <Bar dataKey="count" name="Count" radius={[5, 5, 0, 0]}>
-            {data.map((_, i) => <Cell key={i} fill={ISSUE_COLORS[i]} fillOpacity={0.85} />)}
-          </Bar>
-        </BarChart>
-      </ResponsiveContainer>
+            <CartesianGrid strokeDasharray="3 3" vertical={false} />
+            <XAxis dataKey="issue_type" tick={{ fontSize: 11 }} />
+            <YAxis tick={{ fontSize: 11 }} />
+            <Tooltip content={<CustomTooltip />} cursor={{ fill: "rgba(255,255,255,0.03)" }} />
+            <Bar dataKey="count" name="Count" radius={[5, 5, 0, 0]}>
+              {data.map((_, i) => <Cell key={i} fill={ISSUE_COLORS[i]} fillOpacity={0.85} />)}
+            </Bar>
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
     </ChartCard>
   );
 }
@@ -218,24 +224,25 @@ export function PatientLoadChart({ data, delay = 0 }) {
       <div style={{ width: "100%", height: 300 }}>
         <ResponsiveContainer width="100%" height="100%">
           <BarChart data={data}>
-          <CartesianGrid strokeDasharray="3 3" vertical={false} />
-          <XAxis dataKey="department" tick={{ fontSize: 11 }} />
-          <YAxis tick={{ fontSize: 11 }} />
-          <Tooltip content={<CustomTooltip />} cursor={{ fill: "rgba(255,255,255,0.03)" }} />
-          <defs>
-            <linearGradient id="gradPatient" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#8b5cf6" stopOpacity={0.9} />
-              <stop offset="100%" stopColor="#8b5cf6" stopOpacity={0.3} />
-            </linearGradient>
-            <linearGradient id="gradCritical" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#ef4444" stopOpacity={0.9} />
-              <stop offset="100%" stopColor="#ef4444" stopOpacity={0.3} />
-            </linearGradient>
-          </defs>
-          <Bar dataKey="current_count" name="Total Patients" fill="url(#gradPatient)" radius={[5, 5, 0, 0]} />
-          <Bar dataKey="critical" name="Critical" fill="url(#gradCritical)" radius={[5, 5, 0, 0]} />
-        </BarChart>
-      </ResponsiveContainer>
+            <CartesianGrid strokeDasharray="3 3" vertical={false} />
+            <XAxis dataKey="department" tick={{ fontSize: 11 }} />
+            <YAxis tick={{ fontSize: 11 }} />
+            <Tooltip content={<CustomTooltip />} cursor={{ fill: "rgba(255,255,255,0.03)" }} />
+            <defs>
+              <linearGradient id="gradPatient" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="#8b5cf6" stopOpacity={0.9} />
+                <stop offset="100%" stopColor="#8b5cf6" stopOpacity={0.3} />
+              </linearGradient>
+              <linearGradient id="gradCritical" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="#ef4444" stopOpacity={0.9} />
+                <stop offset="100%" stopColor="#ef4444" stopOpacity={0.3} />
+              </linearGradient>
+            </defs>
+            <Bar dataKey="current_count" name="Total Patients" fill="url(#gradPatient)" radius={[5, 5, 0, 0]} />
+            <Bar dataKey="critical" name="Critical" fill="url(#gradCritical)" radius={[5, 5, 0, 0]} />
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
     </ChartCard>
   );
 }
@@ -257,15 +264,16 @@ export function StaffDistributionPie({ data, delay = 0 }) {
       <div style={{ width: "100%", height: 300 }}>
         <ResponsiveContainer width="100%" height="100%">
           <PieChart>
-          <Pie data={pieData} cx="50%" cy="50%" innerRadius="48%" outerRadius="76%" paddingAngle={3} dataKey="value" strokeWidth={0}>
-            {pieData.map((_, i) => <Cell key={i} fill={ROLE_COLORS[i]} />)}
-          </Pie>
-          <Tooltip content={<PieTooltip />} />
-          <Legend verticalAlign="bottom" iconType="circle" formatter={(v) => <span className="text-gray-400 text-xs ml-1">{v}</span>} />
-          <text x="50%" y="46%" textAnchor="middle" dominantBaseline="middle" className="fill-white text-xl font-bold">{data.total_staff}</text>
-          <text x="50%" y="55%" textAnchor="middle" dominantBaseline="middle" className="fill-gray-500 text-[10px]">Total Staff</text>
-        </PieChart>
-      </ResponsiveContainer>
+            <Pie data={pieData} cx="50%" cy="50%" innerRadius="48%" outerRadius="76%" paddingAngle={3} dataKey="value" strokeWidth={0}>
+              {pieData.map((_, i) => <Cell key={i} fill={ROLE_COLORS[i]} />)}
+            </Pie>
+            <Tooltip content={<PieTooltip />} />
+            <Legend verticalAlign="bottom" iconType="circle" formatter={(v) => <span className="text-gray-400 text-xs ml-1">{v}</span>} />
+            <text x="50%" y="46%" textAnchor="middle" dominantBaseline="middle" className="fill-white text-xl font-bold">{data.total_staff}</text>
+            <text x="50%" y="55%" textAnchor="middle" dominantBaseline="middle" className="fill-gray-500 text-[10px]">Total Staff</text>
+          </PieChart>
+        </ResponsiveContainer>
+      </div>
     </ChartCard>
   );
 }
@@ -279,14 +287,15 @@ export function SLATrendChart({ data, delay = 0 }) {
       <div style={{ width: "100%", height: 300 }}>
         <ResponsiveContainer width="100%" height="100%">
           <LineChart data={data}>
-          <CartesianGrid strokeDasharray="3 3" vertical={false} />
-          <XAxis dataKey="date" tick={{ fontSize: 11 }} tickFormatter={(d) => new Date(d + "T00:00").toLocaleDateString("en-US", { weekday: "short" })} />
-          <YAxis tick={{ fontSize: 11 }} />
-          <Tooltip content={<CustomTooltip />} />
-          <Line type="monotone" dataKey="breaches" name="Breaches" stroke="#ef4444" strokeWidth={2.5} dot={{ fill: "#ef4444", r: 4 }} activeDot={{ r: 6, stroke: "#ef4444", strokeWidth: 2, fill: "#0B0F19" }} />
-          <Line type="monotone" dataKey="resolved" name="Resolved" stroke="#10b981" strokeWidth={2} dot={{ fill: "#10b981", r: 3 }} strokeDasharray="5 5" />
-        </LineChart>
-      </ResponsiveContainer>
+            <CartesianGrid strokeDasharray="3 3" vertical={false} />
+            <XAxis dataKey="date" tick={{ fontSize: 11 }} tickFormatter={(d) => new Date(d + "T00:00").toLocaleDateString("en-US", { weekday: "short" })} />
+            <YAxis tick={{ fontSize: 11 }} />
+            <Tooltip content={<CustomTooltip />} />
+            <Line type="monotone" dataKey="breaches" name="Breaches" stroke="#ef4444" strokeWidth={2.5} dot={{ fill: "#ef4444", r: 4 }} activeDot={{ r: 6, stroke: "#ef4444", strokeWidth: 2, fill: "#0B0F19" }} />
+            <Line type="monotone" dataKey="resolved" name="Resolved" stroke="#10b981" strokeWidth={2} dot={{ fill: "#10b981", r: 3 }} strokeDasharray="5 5" />
+          </LineChart>
+        </ResponsiveContainer>
+      </div>
     </ChartCard>
   );
 }
@@ -300,14 +309,15 @@ export function StaffWorkloadChart({ data, delay = 0 }) {
       <div style={{ width: "100%", height: 300 }}>
         <ResponsiveContainer width="100%" height="100%">
           <BarChart data={data} layout="vertical">
-          <CartesianGrid strokeDasharray="3 3" horizontal={false} />
-          <XAxis type="number" tick={{ fontSize: 11 }} />
-          <YAxis dataKey="staff" type="category" tick={{ fontSize: 10 }} width={60} />
-          <Tooltip content={<CustomTooltip />} cursor={{ fill: "rgba(255,255,255,0.03)" }} />
-          <Bar dataKey="issues_handled" name="Handled" fill="#06b6d4" radius={[0, 4, 4, 0]} fillOpacity={0.8} />
-          <Bar dataKey="open_tickets" name="Open" fill="#f59e0b" radius={[0, 4, 4, 0]} fillOpacity={0.8} />
-        </BarChart>
-      </ResponsiveContainer>
+            <CartesianGrid strokeDasharray="3 3" horizontal={false} />
+            <XAxis type="number" tick={{ fontSize: 11 }} />
+            <YAxis dataKey="staff" type="category" tick={{ fontSize: 10 }} width={60} />
+            <Tooltip content={<CustomTooltip />} cursor={{ fill: "rgba(255,255,255,0.03)" }} />
+            <Bar dataKey="issues_handled" name="Handled" fill="#06b6d4" radius={[0, 4, 4, 0]} fillOpacity={0.8} />
+            <Bar dataKey="open_tickets" name="Open" fill="#f59e0b" radius={[0, 4, 4, 0]} fillOpacity={0.8} />
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
     </ChartCard>
   );
 }
@@ -333,17 +343,18 @@ export function SLAByDepartmentChart({ workload, breaches, delay = 0 }) {
       <div style={{ width: "100%", height: 300 }}>
         <ResponsiveContainer width="100%" height="100%">
           <BarChart data={data}>
-          <CartesianGrid strokeDasharray="3 3" vertical={false} />
-          <XAxis dataKey="department" tick={{ fontSize: 11 }} />
-          <YAxis tick={{ fontSize: 11 }} domain={[0, 100]} unit="%" />
-          <Tooltip content={<CustomTooltip />} cursor={{ fill: "rgba(255,255,255,0.03)" }} />
-          <Bar dataKey="compliance" name="Compliance %" radius={[5, 5, 0, 0]}>
-            {data.map((entry, i) => (
-              <Cell key={i} fill={entry.compliance >= 80 ? "#10b981" : entry.compliance >= 60 ? "#f59e0b" : "#ef4444"} fillOpacity={0.85} />
-            ))}
-          </Bar>
-        </BarChart>
-      </ResponsiveContainer>
+            <CartesianGrid strokeDasharray="3 3" vertical={false} />
+            <XAxis dataKey="department" tick={{ fontSize: 11 }} />
+            <YAxis tick={{ fontSize: 11 }} domain={[0, 100]} unit="%" />
+            <Tooltip content={<CustomTooltip />} cursor={{ fill: "rgba(255,255,255,0.03)" }} />
+            <Bar dataKey="compliance" name="Compliance %" radius={[5, 5, 0, 0]}>
+              {data.map((entry, i) => (
+                <Cell key={i} fill={entry.compliance >= 80 ? "#10b981" : entry.compliance >= 60 ? "#f59e0b" : "#ef4444"} fillOpacity={0.85} />
+              ))}
+            </Bar>
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
     </ChartCard>
   );
 }
