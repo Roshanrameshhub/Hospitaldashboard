@@ -53,11 +53,12 @@ export function ChartCard({ title, children, delay = 0, className = "" }) {
 /* ─── Workload by Department ───────────────────────────────────────── */
 
 export function WorkloadChart({ data, delay = 0 }) {
-  if (!data) return null;
+  if (!data || (Array.isArray(data) && data.length === 0)) return null;
   return (
     <ChartCard title="Workload by Department" delay={delay}>
-      <ResponsiveContainer width="100%" height="100%">
-        <BarChart data={data} barGap={4}>
+      <div style={{ width: "100%", height: 300 }}>
+        <ResponsiveContainer width="100%" height="100%">
+          <BarChart data={data} barGap={4}>
           <CartesianGrid strokeDasharray="3 3" vertical={false} />
           <XAxis dataKey="department" tick={{ fontSize: 11 }} />
           <YAxis tick={{ fontSize: 11 }} />
@@ -83,11 +84,12 @@ export function WorkloadChart({ data, delay = 0 }) {
 /* ─── Resolution Trend ─────────────────────────────────────────────── */
 
 export function ResolutionTrendChart({ data, delay = 0 }) {
-  if (!data) return null;
+  if (!data || (Array.isArray(data) && data.length === 0)) return null;
   return (
     <ChartCard title="Resolution Trend (7 Days)" delay={delay}>
-      <ResponsiveContainer width="100%" height="100%">
-        <AreaChart data={data}>
+      <div style={{ width: "100%", height: 300 }}>
+        <ResponsiveContainer width="100%" height="100%">
+          <AreaChart data={data}>
           <defs>
             <linearGradient id="gradArea" x1="0" y1="0" x2="0" y2="1">
               <stop offset="0%" stopColor="#06b6d4" stopOpacity={0.3} />
@@ -119,8 +121,9 @@ export function OpenClosedDonut({ kpis, delay = 0 }) {
 
   return (
     <ChartCard title="Open vs Resolved" delay={delay}>
-      <ResponsiveContainer width="100%" height="100%">
-        <PieChart>
+      <div style={{ width: "100%", height: 300 }}>
+        <ResponsiveContainer width="100%" height="100%">
+          <PieChart>
           <Pie data={data} cx="50%" cy="50%" innerRadius="55%" outerRadius="80%" paddingAngle={4} dataKey="value" strokeWidth={0}>
             {data.map((_, i) => <Cell key={i} fill={DONUT_COLORS[i]} />)}
           </Pie>
@@ -139,11 +142,12 @@ export function OpenClosedDonut({ kpis, delay = 0 }) {
 const PRIORITY_COLORS = { High: "#ef4444", Medium: "#f59e0b", Low: "#3b82f6" };
 
 export function PriorityChart({ data, delay = 0 }) {
-  if (!data) return null;
+  if (!data || (Array.isArray(data) && data.length === 0)) return null;
   return (
     <ChartCard title="Priority Distribution" delay={delay}>
-      <ResponsiveContainer width="100%" height="100%">
-        <BarChart data={data} layout="vertical">
+      <div style={{ width: "100%", height: 300 }}>
+        <ResponsiveContainer width="100%" height="100%">
+          <BarChart data={data} layout="vertical">
           <CartesianGrid strokeDasharray="3 3" horizontal={false} />
           <XAxis type="number" tick={{ fontSize: 11 }} />
           <YAxis dataKey="priority" type="category" tick={{ fontSize: 11 }} width={55} />
@@ -162,11 +166,12 @@ export function PriorityChart({ data, delay = 0 }) {
 const SHIFT_COLORS = { Morning: "#f59e0b", Afternoon: "#06b6d4", Night: "#8b5cf6" };
 
 export function ShiftChart({ data, delay = 0 }) {
-  if (!data) return null;
+  if (!data || (Array.isArray(data) && data.length === 0)) return null;
   return (
     <ChartCard title="Shift Analysis" delay={delay}>
-      <ResponsiveContainer width="100%" height="100%">
-        <BarChart data={data}>
+      <div style={{ width: "100%", height: 300 }}>
+        <ResponsiveContainer width="100%" height="100%">
+          <BarChart data={data}>
           <CartesianGrid strokeDasharray="3 3" vertical={false} />
           <XAxis dataKey="shift" tick={{ fontSize: 11 }} />
           <YAxis tick={{ fontSize: 11 }} />
@@ -185,11 +190,12 @@ export function ShiftChart({ data, delay = 0 }) {
 const ISSUE_COLORS = ["#06b6d4", "#8b5cf6", "#f59e0b", "#10b981", "#ef4444"];
 
 export function IssueTypeChart({ data, delay = 0 }) {
-  if (!data) return null;
+  if (!data || (Array.isArray(data) && data.length === 0)) return null;
   return (
     <ChartCard title="Issue Type Analysis" delay={delay}>
-      <ResponsiveContainer width="100%" height="100%">
-        <BarChart data={data}>
+      <div style={{ width: "100%", height: 300 }}>
+        <ResponsiveContainer width="100%" height="100%">
+          <BarChart data={data}>
           <CartesianGrid strokeDasharray="3 3" vertical={false} />
           <XAxis dataKey="issue_type" tick={{ fontSize: 11 }} />
           <YAxis tick={{ fontSize: 11 }} />
@@ -206,11 +212,12 @@ export function IssueTypeChart({ data, delay = 0 }) {
 /* ─── NEW: Patient Load by Department ──────────────────────────────── */
 
 export function PatientLoadChart({ data, delay = 0 }) {
-  if (!data) return null;
+  if (!data || (Array.isArray(data) && data.length === 0)) return null;
   return (
     <ChartCard title="Department-wise Patient Load" delay={delay}>
-      <ResponsiveContainer width="100%" height="100%">
-        <BarChart data={data}>
+      <div style={{ width: "100%", height: 300 }}>
+        <ResponsiveContainer width="100%" height="100%">
+          <BarChart data={data}>
           <CartesianGrid strokeDasharray="3 3" vertical={false} />
           <XAxis dataKey="department" tick={{ fontSize: 11 }} />
           <YAxis tick={{ fontSize: 11 }} />
@@ -238,7 +245,7 @@ export function PatientLoadChart({ data, delay = 0 }) {
 const ROLE_COLORS = ["#06b6d4", "#10b981", "#f59e0b"];
 
 export function StaffDistributionPie({ data, delay = 0 }) {
-  if (!data) return null;
+  if (!data || !data.by_role) return null;
   const pieData = [
     { name: "Doctors", value: data.by_role.doctors },
     { name: "Nurses", value: data.by_role.nurses },
@@ -247,8 +254,9 @@ export function StaffDistributionPie({ data, delay = 0 }) {
 
   return (
     <ChartCard title="Staff Distribution by Role" delay={delay}>
-      <ResponsiveContainer width="100%" height="100%">
-        <PieChart>
+      <div style={{ width: "100%", height: 300 }}>
+        <ResponsiveContainer width="100%" height="100%">
+          <PieChart>
           <Pie data={pieData} cx="50%" cy="50%" innerRadius="48%" outerRadius="76%" paddingAngle={3} dataKey="value" strokeWidth={0}>
             {pieData.map((_, i) => <Cell key={i} fill={ROLE_COLORS[i]} />)}
           </Pie>
@@ -265,11 +273,12 @@ export function StaffDistributionPie({ data, delay = 0 }) {
 /* ─── NEW: SLA Breaches Over Time ──────────────────────────────────── */
 
 export function SLATrendChart({ data, delay = 0 }) {
-  if (!data) return null;
+  if (!data || (Array.isArray(data) && data.length === 0)) return null;
   return (
     <ChartCard title="SLA Breaches Over Time" delay={delay}>
-      <ResponsiveContainer width="100%" height="100%">
-        <LineChart data={data}>
+      <div style={{ width: "100%", height: 300 }}>
+        <ResponsiveContainer width="100%" height="100%">
+          <LineChart data={data}>
           <CartesianGrid strokeDasharray="3 3" vertical={false} />
           <XAxis dataKey="date" tick={{ fontSize: 11 }} tickFormatter={(d) => new Date(d + "T00:00").toLocaleDateString("en-US", { weekday: "short" })} />
           <YAxis tick={{ fontSize: 11 }} />
@@ -285,11 +294,12 @@ export function SLATrendChart({ data, delay = 0 }) {
 /* ─── NEW: Staff Workload Comparison ───────────────────────────────── */
 
 export function StaffWorkloadChart({ data, delay = 0 }) {
-  if (!data) return null;
+  if (!data || (Array.isArray(data) && data.length === 0)) return null;
   return (
     <ChartCard title="Staff Workload Comparison" delay={delay}>
-      <ResponsiveContainer width="100%" height="100%">
-        <BarChart data={data} layout="vertical">
+      <div style={{ width: "100%", height: 300 }}>
+        <ResponsiveContainer width="100%" height="100%">
+          <BarChart data={data} layout="vertical">
           <CartesianGrid strokeDasharray="3 3" horizontal={false} />
           <XAxis type="number" tick={{ fontSize: 11 }} />
           <YAxis dataKey="staff" type="category" tick={{ fontSize: 10 }} width={60} />
@@ -305,7 +315,7 @@ export function StaffWorkloadChart({ data, delay = 0 }) {
 /* ─── NEW: SLA Compliance by Department ────────────────────────────── */
 
 export function SLAByDepartmentChart({ workload, breaches, delay = 0 }) {
-  if (!workload || !breaches) return null;
+  if (!workload || !breaches || (Array.isArray(workload) && workload.length === 0)) return null;
   const breachByDept = {};
   breaches.forEach((b) => {
     breachByDept[b.department] = (breachByDept[b.department] || 0) + 1;
@@ -320,8 +330,9 @@ export function SLAByDepartmentChart({ workload, breaches, delay = 0 }) {
 
   return (
     <ChartCard title="SLA Compliance by Department" delay={delay}>
-      <ResponsiveContainer width="100%" height="100%">
-        <BarChart data={data}>
+      <div style={{ width: "100%", height: 300 }}>
+        <ResponsiveContainer width="100%" height="100%">
+          <BarChart data={data}>
           <CartesianGrid strokeDasharray="3 3" vertical={false} />
           <XAxis dataKey="department" tick={{ fontSize: 11 }} />
           <YAxis tick={{ fontSize: 11 }} domain={[0, 100]} unit="%" />
