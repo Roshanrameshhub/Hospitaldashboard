@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Clock, Menu, ChevronDown, Bell } from "lucide-react";
+import { Clock, Menu, ChevronDown } from "lucide-react";
+import NotificationBell from "../components/Notifications/NotificationBell";
 import { useAuth } from "../context/AuthContext";
 
 export default function Header({ onMenuClick }) {
@@ -45,10 +46,7 @@ export default function Header({ onMenuClick }) {
             </span>
           </div>
 
-          <button className="relative h-9 w-9 flex items-center justify-center rounded-lg bg-white/5 border border-white/10 hover:bg-white/10 transition-colors">
-            <Bell className="h-4 w-4 text-gray-400" />
-            <span className="absolute -top-0.5 -right-0.5 h-2 w-2 bg-red-500 rounded-full" />
-          </button>
+          <NotificationBell />
 
           <div className="flex items-center gap-2 bg-white/5 border border-white/10 rounded-lg px-2 sm:px-3 py-1.5">
             <div className="h-7 w-7 rounded-full bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center text-[10px] font-bold text-white shadow-lg shadow-cyan-500/20">

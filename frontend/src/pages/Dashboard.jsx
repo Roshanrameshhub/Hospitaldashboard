@@ -5,6 +5,7 @@ import { ResolutionTrendChart, OpenClosedDonut } from "../components/DashboardCh
 import InsightsPanel from "../components/InsightsPanel";
 import RecentActivity from "../components/RecentActivity";
 import * as api from "../api";
+import Skeleton from "../components/Skeleton";
 
 const extraCards = [
   { key: "total_patients", label: "Total Patients", icon: "HeartPulse", color: "from-pink-500 to-rose-600", sparkColor: "#ec4899", trend: "+6%", trendUp: true },
@@ -46,7 +47,14 @@ export default function Dashboard() {
     load();
   }, []);
 
-  if (loading) return <p>Loading dashboard data...</p>;
+  if (loading)
+    return (
+      <div className="p-4 space-y-4">
+        <Skeleton className="h-6 w-1/3" />
+        <Skeleton className="h-48" />
+        <Skeleton className="h-48" />
+      </div>
+    );
   if (error) return <p>Failed to load data</p>;
   if (!data) return null;
 

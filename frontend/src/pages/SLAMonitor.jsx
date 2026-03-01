@@ -5,6 +5,7 @@ import { KPICard } from "../components/KPICards";
 import { SLATrendChart, PriorityChart, SLAByDepartmentChart } from "../components/DashboardCharts";
 import SLATable from "../components/SLATable";
 import * as api from "../api";
+import Skeleton from "../components/Skeleton";
 
 export default function SLAMonitor() {
   const [data, setData] = useState(null);
@@ -32,7 +33,13 @@ export default function SLAMonitor() {
     load();
   }, []);
 
-  if (loading) return <p>Loading dashboard data...</p>;
+  if (loading)
+    return (
+      <div className="p-4 space-y-4">
+        <Skeleton className="h-6 w-1/3" />
+        <Skeleton className="h-48" />
+      </div>
+    );
   if (error) return <p>Failed to load data</p>;
   if (!data) return null;
 
