@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Outlet } from "react-router-dom";
 import Sidebar from "./Sidebar";
 import Header from "./Header";
-import NotificationPanel from "./NotificationPanel";
 
 export default function MainLayout() {
   const [collapsed, setCollapsed] = useState(false);
@@ -25,8 +24,8 @@ export default function MainLayout() {
       <div className="main-content">
         <Header
           onMenuClick={() => setMobileOpen(true)}
-          onNotificationClick={() => setNotificationOpen(!notificationOpen)}
           notificationOpen={notificationOpen}
+          onNotificationClick={() => setNotificationOpen(!notificationOpen)}
         />
 
         {/* Main Scrollable Area */}
@@ -34,11 +33,6 @@ export default function MainLayout() {
           <Outlet context={{ notificationOpen, collapsed }} />
         </main>
       </div>
-
-      {/* RIGHT: Notification Panel (fixed 320px on desktop, hidden on mobile) */}
-      {notificationOpen && (
-        <NotificationPanel onClose={() => setNotificationOpen(false)} />
-      )}
     </div>
   );
 }
