@@ -97,3 +97,9 @@ def patients_route():
 @app.get("/staff-details")
 def staff_details_route():
     return get_staff_stats(staff_details)
+
+import os
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run("main:app", host="0.0.0.0", port=int(os.environ.get("PORT", 8000)))
